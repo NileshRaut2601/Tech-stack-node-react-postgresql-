@@ -1,0 +1,1 @@
+export let data="This data is exported";
