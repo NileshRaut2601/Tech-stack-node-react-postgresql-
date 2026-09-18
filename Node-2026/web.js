@@ -1,37 +1,64 @@
-const http = require("http");
-const fs = require("fs");
-const path = require("path");
 
-const contentTypes = {
-    ".html": "text/html",
-    ".css": "text/css"
-};
+const fs = require('fs');
+const http = require('http');
 
-http.createServer((request, response) => {
-    const requestedPath = request.url === "/"
-        ? "/html/index.html"
-        : request.url.endsWith(".html")
-            ? "/html" + request.url
-            : request.url;
-    const filePath = path.join(__dirname, requestedPath);
-    const extension = path.extname(filePath);
+http.createServer((req, resp) => {
 
-    if (!contentTypes[extension]) {
-        response.writeHead(404, { "Content-Type": "text/plain" });
-        response.end("Page not found");
-        return;
+
+    const file=req.url
+
+    // to remove the /favicorn.ico from url
+    if (req.url === '/favicon.ico') {
+    resp.writeHead(204);
+    resp.end();
+    return;
+}
+    console.log('html'+file);
+    // ================= Header File========
+    let collectHeader;
+    collectHeader=fs.readFileSync('html/header.html',"utf-8");
+    
+
+    //=======================
+    if (req.url == '/') {
+
+        fs.readFile("html/home.html", 'utf-8', (err, data) => {
+            if (err) {
+                resp.writeHead(500, { 'content-type': "text/plain" });
+                resp.end("Internal Server Error");
+                return false;
+            }
+            resp.writeHead(200, { 'content-type': 'text/html' })
+            resp.write(collectHeader+""+data)
+            resp.end();
+        })
     }
 
-    fs.readFile(filePath, (error, file) => {
-        if (error) {
-            response.writeHead(404, { "Content-Type": "text/plain" });
-            response.end("Page not found");
-            return;
-        }
-
-        response.writeHead(200, { "Content-Type": contentTypes[extension] });
-        response.end(file);
-    });
-}).listen(3200, () => {
-    console.log("Website running at http://localhost:3200");
-});
+    else if (req.url == '/style.css' || req.url == '/css/style.css') {
+        fs.readFile('css/style.css', 'utf-8', (err, data) => {
+            if (err) {
+                resp.writeHead(500, { 'content-type': 'text/plain' })
+                resp.end('css not found error');
+                return;
+            }
+            resp.writeHead(200, { "content-type": 'text/css' });
+            resp.end(data);
+        });
+    }
+    else if (req.url!="/") {
+        fs.readFile('html'+file+".html", 'utf-8', (err, data) => {
+            if (err) {
+                resp.writeHead(500, { "content-type": "text/plain" });
+                resp.end('Internal server error');
+                return;
+            }
+            resp.writeHead(200, { "content-type": "text/html" });
+            resp.write(collectHeader + "" + data);
+            resp.end();
+        });
+    }
+    else {
+        resp.writeHead(404, { "content-type": "text/plain" });
+        resp.end("Page Not Found");
+    }
+}).listen(3200)

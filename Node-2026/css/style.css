@@ -29,3 +29,17 @@ nav a {
 nav a:hover {
     color: #ffcc00;
 }
+p{
+  
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 1rem;            
+  line-height: 1.6;           
+  color: #683232;           
+  padding: 20px;
+  /* Spacing */
+  margin-top: 0;             
+  margin-bottom: 1.25rem;     
+  text-align: center;           
+  text-rendering: optimizeLegibility; 
+  background-color: rgb(233, 246, 199);
+}
