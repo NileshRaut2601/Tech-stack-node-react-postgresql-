@@ -5,13 +5,20 @@ const app = express();
 
 // Middleware Function 
 
-function checkRouter(req,resp,next){
+// function checkRouter(req,resp,next){
+//     console.log(req.url);
+//     next();
+// }
+
+// // Application Middelware
+// app.use(checkRouter);
+
+// in simple application middleware can be written as 
+
+app.use((req,resp,next)=>{
     console.log(req.url);
     next();
-}
-
-// Application Middelware
-app.use(checkRouter);
+})
 
 app.get("/",(req,resp)=>{
     resp.send("Hello from route page");
