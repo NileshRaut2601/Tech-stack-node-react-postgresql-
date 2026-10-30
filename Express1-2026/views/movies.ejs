@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies</title>
+</head>
+<body>
+    <h1>Data will be shown here</h1>
+
+    <table border="1">
+        <tr>
+            <td>Name</td>
+            <td>Director</td>
+            <td>Genre</td>
+        </tr>
+        
+        <% movies.forEach(movie=>{%>
+            <tr>
+            <td><%= movie.Movie_Name %></td>
+            <td><%=movie.Director%></td>
+            <td><%= movie.Genre %></td>
+
+            <% }) %>
+            </tr>
+
+    </table>
+</body>
+</html>
